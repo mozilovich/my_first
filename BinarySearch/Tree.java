@@ -5,6 +5,7 @@ package binarysearch;
  */
 public class Tree<T extends Comparable<T>>  {
   private Node<T> root;
+  private Node<T> parent;
 
   public void add(T value) {
     if (root == null)
@@ -18,12 +19,12 @@ public class Tree<T extends Comparable<T>>  {
       if (node.right != null)
         adding(value, node.right);
       else
-        node.right = new Node(null, null, value);
+        node.right = new Node<T>(null, null, value);
     } else {
       if (node.left != null)
         adding(value, node.left);
       else
-        node.left = new Node(null, null, value);
+        node.left = new Node<T>(null, null, value);
     }
   }
 
@@ -31,17 +32,19 @@ public class Tree<T extends Comparable<T>>  {
     if (root == null) {
       return false;
     }
-    return find(value, root);
+    return find(value, root).value.compareTo(value)==0;
   }
 
-  private boolean find(T value, Node<T> node) {
+  private Node<T> find(T value, Node<T> node) {
     if (value.compareTo(node.value) > 0 && node.right != null) {
+      parent = node;
       return find(value, node.right);
     }
     if (value.compareTo(node.value) < 0 && node.left != null) {
+      parent = node;
       return find(value, node.left);
     }
-    return value.compareTo(node.value) == 0;
+    return node;
   }
 
   public void remove(T value) {
@@ -60,12 +63,24 @@ public class Tree<T extends Comparable<T>>  {
           find(value, node.left);
         }
       }
-      node = node.left;//если удаляем левый , то заменяем на левый
-      node.left = null;
-      node = node.right;// если удаляем правый , то заменяем на правый
-      node.right = null;
-
+      if(node.left==null && node.right!=null){
+        node=node.right;
+      }
+      else if(node.left!=null && node.right==null){
+        node=node.left;
+      }
+      else{
+        if(node.value.compareTo(parent.value)>=0) {
+          node = node.right;
+          node.right = null;
+        }
+        else {
+          node = node.left;
+          node.left = null;
+        }
+      }
     }
   }
+
 
 }
