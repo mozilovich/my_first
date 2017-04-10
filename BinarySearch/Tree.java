@@ -3,7 +3,7 @@ package binarysearch;
 /**
  * Created by Admin on 02.04.2017.
  */
-public class Tree<T extends Comparable<T>>  {
+public class Tree<T extends Comparable<T>> {
   private Node<T> root;
   private Node<T> parent;
 
@@ -32,7 +32,7 @@ public class Tree<T extends Comparable<T>>  {
     if (root == null) {
       return false;
     }
-    return find(value, root).value.compareTo(value)==0;
+    return find(value, root).value.compareTo(value) == 0;
   }
 
   private Node<T> find(T value, Node<T> node) {
@@ -48,35 +48,34 @@ public class Tree<T extends Comparable<T>>  {
   }
 
   public void remove(T value) {
-    if(root != null) {
+    if (root != null) {
       removing(value, root);
     }
   }
 
   private void removing(T value, Node<T> node) {
-    if(contains(value)){
-      while(value.compareTo(node.value)!=0){
+    Node<T> curr = null;
+    if (contains(value)) {
+      while (value.compareTo(node.value) != 0) {
         if (value.compareTo(node.value) > 0 && node.right != null) {
+          curr = node.right;
           find(value, node.right);
-        }
-        else {
+        } else {
+          curr = node.left;
           find(value, node.left);
         }
       }
-      if(node.left==null && node.right!=null){
-        node=node.right;
-      }
-      else if(node.left!=null && node.right==null){
-        node=node.left;
-      }
-      else{
-        if(node.value.compareTo(parent.value)>=0) {
-          node = node.right;
-          node.right = null;
-        }
-        else {
-          node = node.left;
-          node.left = null;
+      if (curr.left == null && curr.right != null) {
+        curr = curr.right;
+      } else if (curr.left != null && curr.right == null) {
+        curr = curr.left;
+      } else {
+        if (curr.value.compareTo(parent.value) >= 0) {
+          curr = curr.right;
+          curr.right = null;
+        } else {
+          curr = curr.left;
+          curr.left = null;
         }
       }
     }
