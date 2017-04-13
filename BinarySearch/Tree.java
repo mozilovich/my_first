@@ -86,7 +86,7 @@ public class Tree<T extends Comparable<T>> {
             parent2 = result;
             result = result.left;
           }
-          parent2.left = null;
+          parent2.left = result.right;
           result.right = parent.right.right;
           result.left = parent.right.left;
           parent.right = result;
@@ -99,7 +99,7 @@ public class Tree<T extends Comparable<T>> {
             parent2 = result;
             result = result.right;
           }
-          parent2.right = null;
+          parent2.right = result.left;
           result.left = parent.left.left;
           result.right = parent.left.right;
           parent.left = result;
@@ -109,10 +109,9 @@ public class Tree<T extends Comparable<T>> {
     }
   }
 public void zig(Node<T> y ,Node<T>  x ){
-  y.right=x;
+  y.left = x.right;
+  x.right = y;
   root = x;
-  x.left = y;
-  y.right = y.right.left;
 }
 
 }
